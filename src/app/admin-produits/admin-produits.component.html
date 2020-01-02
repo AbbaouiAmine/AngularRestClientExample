@@ -1,0 +1,128 @@
+<div class="card" *ngIf="isAuth() && (isUser()|| isAdmin())">
+  <div class="header">
+    <div class="row">
+      <div class="col-md-6">
+        <h4 class="title">Produits</h4>
+        <p class="category">Gestion des produits</p>
+        
+        <i class="btn btn-info  pull-left pe-7s-plus" (click)="onNewProd()"></i>
+   
+      </div>
+      <div class="col-md-4">
+        <div class="form-group">
+          <input type="text" name="name" ngModel  class="form-control pull-right" placeholder="Name" value=""
+            [(ngModel)]="term">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <button type="submit" class="btn btn-info btn-fill pull-right">Search</button>
+      </div>
+    </div>
+    <form *ngIf="mode=='new-prod'" #f="ngForm" (ngSubmit)="onSaveProd(f.value)">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Name </label>
+            <input type="text" name="name" ngModel class="form-control" placeholder="Name" value="">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Price </label>
+            <input type="text" name="price" ngModel class="form-control" placeholder="Price" value="">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Catégorie</label>
+            <select #selectList (change)="setCurentCategorie(selectList.value)" ngModel name="category"  class="form-control" id="exampleFormControlSelect1">
+              <option value="null" disabled>Select a Categorie</option>
+              <option  *ngFor="let c of cats" value="{{c._links.self.href}}">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-info btn-fill pull-right">Add</button>
+      <div class="clearfix"></div>
+      <br>
+    </form>
+
+    <form *ngIf="mode=='edit-prod'" #f="ngForm" (ngSubmit)="onEditProdForm(f.value)">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Name </label>
+            <input type="text" name="name" ngModel  class="form-control" placeholder="Name" [(ngModel)]="currentProduit.name">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Price </label>
+            <input type="text" name="price" ngModel class="form-control" placeholder="Name" [(ngModel)]="currentProduit.price">
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label for="exampleFormControlSelect1">Catégorie</label>
+            <select #selectList (change)="setCurentCategorie(selectList.value)"   class="form-control" id="exampleFormControlSelect1">
+              <option value="null" disabled>Select a Categorie</option>
+              <option  *ngFor="let c of cats" value="{{ c | json }}" [selected]="c.name == currentCat.name">{{c.name}}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      
+      <button type="submit" class="btn btn-info btn-fill pull-right">Edit</button>
+      <div class="clearfix"></div>
+      <br>
+    </form>
+    <div class="clearfix"></div>
+  </div>
+  <div *ngIf="mode == 'list'" class="content">
+    <div class="ct-chart">
+      <div class="table-full-width">
+        <table class="table">
+          <tbody>
+            <tr class="button" *ngFor=" let p of (term != ''? (produits | search : term):(produits | slice:i_start:i_end ))">
+              <td>
+                <i class="pe-7s-note2"></i>
+              </td>
+              <td><a>{{p.name}}</a></td>
+              <td><a>{{p.price|number:'0.4'}}</a></td>
+              <td>
+                <button (click)="onDeleteProd(p)" type="button" rel="tooltip" title="Remove"
+                  class="btn btn-danger btn-simple btn-xs">
+                  <i class="fa fa-times"></i>
+                </button>
+
+                <button (click)="onEditProd(p)" type="button" rel="tooltip" title="Edit Task"
+                  class="btn btn-info btn-simple btn-xs">
+                  <i class="fa fa-edit"></i>
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="text-center">
+      <nav aria-label="Page navigation example">
+        <ul class="pagination" *ngIf="term==''">
+          <li class="page-item cursor"><a class="page-link" (click)="previoustPage()">Previous</a></li>
+          <li [ngClass]="{'page-item':'true','cursor':'true','active':i==currentPage}"
+            *ngFor="let p of dataIdexes; let i=index" (click)="loadPage(i)"><a class="page-link">{{i+1}}</a></li>
+          <li class="page-item cursor"><a class="page-link" (click)="nextPage()">Next</a></li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div>

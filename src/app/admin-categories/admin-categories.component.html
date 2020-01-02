@@ -1,0 +1,75 @@
+<div class="card" *ngIf="isAuth() && isAdmin()">
+  <div class="header">
+    <h4 class="title">Catégories</h4>
+    <p class="category">Gestion des catégories</p>
+    <br>
+    <i  class="btn btn-info  pull-left pe-7s-plus" (click)="onNewCat()"></i>
+    <br>
+
+    <form *ngIf="mode=='new-cat'" #f="ngForm" (ngSubmit)="onSaveCat(f.value)">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Name </label>
+            <input type="text" name="name" ngModel class="form-control" placeholder="Name" value="">
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-info btn-fill pull-right">Save</button>
+      <div class="clearfix"></div>
+    </form>
+
+    <form *ngIf="mode=='edit-cat'" #f="ngForm" (ngSubmit)="onEditCatForm(f.value)">
+      <div class="row">
+        <div class="col-md-12">
+          <div class="form-group">
+            <label>Name </label>
+            <input type="text" name="name" ngModel class="form-control" placeholder="Name" value="" [(ngModel)]="currentCategorie.name">
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="btn btn-info btn-fill pull-right">Edit</button>
+      <div class="clearfix"></div>
+    </form>
+  </div>
+  <div class="content">
+    <div *ngIf="mode == 'list'" [attr.id]="chartId" class="ct-chart {{ chartClass }}">
+
+      
+      <div class="table-full-width">
+        <table class="table">
+          <tbody>
+            <tr class="button"
+              [ngClass]="currentCategorie && currentCategorie._links.self==c._links.self ?'currentCategorie':''"
+              *ngFor="let c of cats.categories">
+              <td>
+                <i class="pe-7s-graph"></i>
+              </td>
+              <td><a>{{c.name}}</a></td>
+              <td>
+                <button  (click)="onDeleteCat(c)" type="button" rel="tooltip" title="Remove" class="btn btn-danger btn-simple btn-xs">
+                  <i class="fa fa-times"></i>
+                </button>
+             
+                <button (click)="onEditCat(c)" type="button" rel="tooltip" title="Edit Task" class="btn btn-info btn-simple btn-xs">
+                  <i class="fa fa-edit"></i>
+              </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="footer">
+      <div class="legend">
+        <span *ngFor="let item of legendItems">
+          <i [ngClass]="item.imageClass"></i> {{item.title}}
+        </span>
+      </div>
+      <hr *ngIf="withHr">
+      <div class="stats">
+        <i [ngClass]="footerIconClass"></i> {{footerText}}
+      </div>
+    </div>
+  </div>
+</div>

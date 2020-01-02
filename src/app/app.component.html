@@ -1,0 +1,30 @@
+<div class="wrapper">
+    <div class="sidebar" data-color="red" data-image="">
+        <app-sidebar [isAuth]="isAuthentificated()"></app-sidebar>
+        <div class="sidebar-background" style="background-image: url(assets/img/sidebar-5.jpg)"></div>
+    </div>
+  
+    <div class="main-panel">
+        <navbar-cmp></navbar-cmp>
+        <div class="main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-3">
+                        <app-categories
+                          [title]="'Catégories'"
+                          [subtitle]="'liste des catégories'"
+                          [footerText]="'Api catalogue'"
+                          [withHr]="true"
+                          [footerIconClass]="'fa fa-history'"
+                        ></app-categories >
+                    </div>
+                    <div class="col-md-9"><router-outlet></router-outlet></div>
+                    
+                </div>
+            </div>
+        </div>
+   
+    </div>
+  
+  </div>
+  

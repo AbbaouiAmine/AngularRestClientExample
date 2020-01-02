@@ -1,0 +1,35 @@
+<div class="card">
+    <div class="header">
+      <h4 class="title">{{ title }}</h4>
+      <p class="category">{{ subtitle }}</p>
+    </div>
+    <div class="content">
+      <div  class="ct-chart">
+        <div class="table-full-width">
+            <table class="table">
+                <tbody>
+                    <tr class="button" [ngClass]="currentCategorie && currentCategorie._links.self==c._links.self ?'currentCategorie':''" 
+                    *ngFor="let c of cats">
+                        <td>
+                            <i class="pe-7s-graph"></i>
+                        </td>
+                        <td (click)="onGetProducts(c)"><a>{{c.name}}</a></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+      </div>
+      <div class="footer">
+        <div class="legend">
+          <span *ngFor="let item of legendItems">
+            <i [ngClass]="item.imageClass"></i> {{item.title}}
+          </span>
+        </div>
+        <hr *ngIf="withHr">
+        <div class="stats">
+          <i [ngClass]="footerIconClass"></i> {{footerText}}
+        </div>
+      </div>
+    </div>
+  </div>
+  
